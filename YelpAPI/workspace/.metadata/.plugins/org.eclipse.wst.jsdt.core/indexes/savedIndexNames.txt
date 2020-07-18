@@ -1,0 +1,9 @@
+INDEX VERSION 1.4+/Users/eiffel/Documents/YelpAPI/workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+1234244087.index
+2360154986.index
+517766874.index
+3044528000.index
+2597694370.index
+4238734766.index
+4249255968.index
+2393765160.index
