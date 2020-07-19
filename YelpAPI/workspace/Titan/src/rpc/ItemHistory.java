@@ -40,13 +40,6 @@ public class ItemHistory extends HttpServlet {
 		MySQLConnection connection = new MySQLConnection();
 
 		try {
-//			JSONObject input = RpcHelper.readJsonObject(request);
-//			String userId = input.getString("user_id");
-//			JSONArray array = input.getJSONArray("favorite");
-//			List<String> items = new ArrayList<> ();
-//			for (int i = 0; i < array.length(); i++) {
-//				items.add(array.getString(i));
-//			}
 			String userId = request.getParameter("user_id");
 			Set<Item> favorite = connection.getFavoriteItems(userId);
 			JSONArray array = new JSONArray();

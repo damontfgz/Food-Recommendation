@@ -135,6 +135,53 @@ public class MySQLConnection {
 		return items;
 	}
 	
+	/*verify if user login properly*/
+	
+	public boolean verifyLogin(String userId, String psw) {
+		if (conn == null) {
+			System.err.println("DB connection failed");
+			return false;
+		}
+		try {
+			String sql = "SELECT * FROM users WHERE user_id=?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, userId);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				if (!psw.equals(rs.getNString("password"))) {
+					System.err.println("user not exist or invalid password");
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	public String getFullname(String userId) {
+		if (conn == null) {
+			System.err.println("DB connection failed");
+			return "";
+		}
+		StringBuilder fullName = new StringBuilder();
+		try {
+			String sql = "SELECT * FROM users WHERE user_id=?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setNString(1, userId);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				fullName.append(rs.getNString("first_name"));
+				fullName.append(" " + rs.getNString("last_name"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return fullName.toString();
+	}
+	
 	public Set<String> getCategories(String itemId) {
 		if (conn == null) {
 			System.err.println("DB connection failed");
