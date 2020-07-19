@@ -65,18 +65,20 @@ public class Login extends HttpServlet {
 			JSONObject obj = RpcHelper.readJsonObject(request);
 			String userId = obj.getString("user_id");
 			String psw = obj.getString("password");
+			
+			JSONObject res = new JSONObject();
 			if (conn.verifyLogin(userId, psw)) {
 				HttpSession session = request.getSession();
 				session.setAttribute("user_id",  userId);
 				session.setMaxInactiveInterval(10 * 60);
 				String name = conn.getFullname(userId);
-				obj.put("status", "OK");
-				obj.put("user_id", userId);
-				obj.put("name", name);
+				res.put("status", "OK");
+				res.put("user_id", userId);
+				res.put("name", name);
 			} else {
 				response.setStatus(401);
 			}
-			RpcHelper.writeJsonObject(response, obj);
+			RpcHelper.writeJsonObject(response, res);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

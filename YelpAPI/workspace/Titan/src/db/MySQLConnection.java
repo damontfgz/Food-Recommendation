@@ -149,15 +149,16 @@ public class MySQLConnection {
 			ResultSet rs = ps.executeQuery();
 			
 			while (rs.next()) {
-				if (!psw.equals(rs.getNString("password"))) {
-					System.err.println("user not exist or invalid password");
-					return false;
+				if (psw.equals(rs.getNString("password"))) {
+					System.out.println("login successfully");
+					return true;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return true;
+		System.out.println("user do not exist or password do not match");
+		return false;
 	}
 	
 	public String getFullname(String userId) {
