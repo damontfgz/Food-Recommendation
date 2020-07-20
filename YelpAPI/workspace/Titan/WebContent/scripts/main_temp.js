@@ -15,32 +15,32 @@ function init() {
     document.querySelector('#fav-btn').addEventListener('click', loadFavoriteItems);
     document.querySelector('#recommend-btn').addEventListener('click', loadRecommendedItems);
 
-//    validateSession();
-    onSessionValid({"user_id":"1111","name":"John Smith","status":"OK"})
+	validateSession();
+    //onSessionValid({"user_id":"1111","name":"John Smith","status":"OK"})
 }
 
 /******************** Session ***********************/
     function validateSession() {
         onSessionInvalid(); //first hide all non related element and only display login form
-        /*var url = './login';
+        var url = './login';
         var req = JSON.stringify({});
 
         showLoadingMessage('Validating session...');
 
-        ajax('Post', url, req, 
+        ajax('GET', url, req, 
             function(res) {
             var result = JSON.parse(res);
             if (result.status === 'OK') {
                 onSessionValid(result);
             }
-        });*/
+        });
     }
     
     function onSessionValid(result) {
         user_id = result.user_id;
         user_fullname = result.name; 
         
-        var loginForm = document.querySelector('#login-form');
+       	document.querySelector('#login-form').style.display = 'none';
         var itemNav = document.querySelector('#item-nav');
         var itemList = document.querySelector('#item-list');
         var avatar = document.querySelector('#avatar');
@@ -48,9 +48,9 @@ function init() {
         var logoutBtn = document.querySelector('#logout-link');
         
         //if login success, show all element and load near by items
-        welcomeMsg.innerHTML = 'Welcome' + user_fullname;
+        welcomeMsg.innerHTML = 'Welcome ' + user_fullname;
         
-        hideElement(loginForm);
+        /*hideElement(loginForm);*/
         showElement(itemNav);
         showElement(itemList);
         showElement(avatar);
@@ -61,21 +61,21 @@ function init() {
     }
 
     function onSessionInvalid() {
-        var loginForm = document.querySelector('#login-form');
-        var itemNav = document.querySelector('#item-nav');
-        var itemList = document.querySelector('#item-list');
-        var avatar = document.querySelector('#avatar');
-        var welcomeMsg = document.querySelector('#welcome-msg');
-        var logoutBtn = document.querySelector('#logout-link');
+        /*var loginForm = document.querySelector("#login-form");*/
+		document.querySelector("#login-form").style.display = 'block';
+        document.querySelector('#item-nav').style.display = 'none';
+       	document.querySelector('#item-list').style.display = 'none';
+        document.querySelector('#avatar').style.display = 'none';
+        document.querySelector('#welcome-msg').style.display = 'none';
+        document.querySelector('#logout-link').style.display = 'none';
         
-        hideElement(loginForm);
-        hideElement(itemNav);
+		
+        /*hideElement(itemNav);
         hideElement(itemList);
         hideElement(avatar);
         hideElement(welcomeMsg);
-        hideElement(logoutBtn);
+        hideElement(logoutBtn);*/
         
-        showElement(loginForm);
     }
 
     function hideElement(element) {
@@ -132,8 +132,9 @@ function init() {
     function login() {
         var username = document.querySelector('#username').value;
         var password = document.querySelector('#password').value;
-        password = md5(username + md5(password));
         
+		password = md5(username + md5(password));
+
         var url = './login';
         var req = JSON.stringify({
             user_id : username,
@@ -289,7 +290,9 @@ function loadRecommendedItems() {
         xhr.onload = function() {
             if (xhr.status === 200) {
                 successCallback(xhr.responseText);
-            } else {
+            } else if (xhr.status === 403){
+				onSessionInvalid();
+			} else {
                 errorCallback();
             }
         };
