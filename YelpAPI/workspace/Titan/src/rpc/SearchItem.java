@@ -42,6 +42,7 @@ public class SearchItem extends HttpServlet {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setContentType("application/json");
+		//session need to login first then can access this servlet
 		HttpSession session = request.getSession(false);
 		if (session == null) {
 			response.setStatus(403);
